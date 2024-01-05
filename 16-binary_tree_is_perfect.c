@@ -43,14 +43,35 @@ int is_perfect_recursive(const binary_tree_t *tree, int height, int level)
 {
 	if (tree == NULL)
 		return (0);
-	if ((tree->left == NULL && tree->right == NULL) ||
-		(tree->left != NULL && tree->right != NULL))
+	if (binary_tree_balance(tree) == 0)
 	{
-		if ((is_perfect_recursive(tree->left, height, level + 1) &&
-			is_perfect_recursive(tree->right, height, level + 1)) ||
-			(!is_perfect_recursive(tree->left, height, level + 1) &&
-			 !is_perfect_recursive(tree->right, height, level + 1)))
-			return (1);
+		if ((tree->left == NULL && tree->right == NULL) ||
+			(tree->left != NULL && tree->right != NULL))
+		{
+			if ((is_perfect_recursive(tree->left, height, level + 1) &&
+				is_perfect_recursive(tree->right, height, level + 1)) ||
+				(!is_perfect_recursive(tree->left, height, level + 1) &&
+				!is_perfect_recursive(tree->right, height, level + 1)))
+				return (1);
+		}
 	}
 	return (0);
+}
+
+/**
+* binary_tree_balance - measures the balance factor of a binary tree
+* @tree: pointer to the root node of the tree to measure the balance factor
+* Return: Balance factor of the tree, or 0 if tree is NULL
+*/
+int binary_tree_balance(const binary_tree_t *tree)
+{
+	int left_height, right_height;
+
+	if (tree == NULL)
+		return (0);
+
+	left_height = binary_tree_height(tree->left);
+	right_height = binary_tree_height(tree->right);
+
+	return (left_height - right_height);
 }
